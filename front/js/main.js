@@ -1,5 +1,5 @@
 $(document).ready(function(){
-	getNotifications()
+	getNotifications();
 	$('[data-toggle="tooltip"]').tooltip();
 
 	var checkbox = $('table tbody input[type="checkbox"]');
@@ -24,24 +24,24 @@ $(document).ready(function(){
 
 function savePerson(){
 
-		var info = {
-			name: $("#name").val(),
-			lastname: $("#lastname").val(),
-			proccess: $("#proccess").val()
+	var info = {
+		name: $("#name").val(),
+		lastname: $("#lastname").val(),
+		proccess: $("#proccess").val()
+	}
+	$.ajax({
+		url:"http://localhost:8080/api/persons",
+		method:"POST",
+		data:JSON.stringify(info),
+		dataType:"json",
+		contentType: 'application/json',
+		success:function(data)
+		{
+			$('#form-person')[0].reset();
+			$("#addEmployeeModal").modal("toggle");
+			location.reload();
 		}
-		$.ajax({
-			url:"http://localhost:8080/api/persons",
-			method:"POST",
-			data:JSON.stringify(info),
-			dataType:"json",
-			contentType: 'application/json',
-			success:function(data)
-			{
-				$('#form-person')[0].reset();
-				$("#addEmployeeModal").modal("toggle");
-				location.reload();
-			}
-		})
+	})
 	event.preventDefault();
 }
 
@@ -52,20 +52,20 @@ function getNotifications() {
 		method: "GET",
 		dataType: "json",
 		success: function (data) {
-				for (let i = 0; i < data.length; i++) {
-					const element = data[i];
-					var proccess = (element.proccess)?  '<b style="color: #228B22;">Procesado</b>' : '<b style="color: #B22222;">NO Procesado</b>';
-					var html = '<tr>';
-					html += '<td><span class="custom-checkbox">';
-					html += '<input type="checkbox" id="checkbox1" name="options" value="'+ element.id +'">';
-					html +=	'<label for="checkbox1"></label>';
-					html += '</span></td>';
-					html += '<td>' + element.name + '</td>';
-					html += '<td>' + element.lastname + '</td>';
-					html += '<td>' + proccess +'</td>';
-					html += '</tr>';
-					$('#table_data').prepend(html);
-				}
+			for (let i = 0; i < data.length; i++) {
+				const element = data[i];
+				var proccess = (element.proccess)?  '<b style="color: #228B22;">Procesado</b>' : '<b style="color: #B22222;">NO Procesado</b>';
+				var html = '<tr>';
+				html += '<td><span class="custom-checkbox">';
+				html += '<input type="checkbox" id="checkbox1" name="options" value="'+ element.id +'">';
+				html +=	'<label for="checkbox1"></label>';
+				html += '</span></td>';
+				html += '<td>' + element.name + '</td>';
+				html += '<td>' + element.lastname + '</td>';
+				html += '<td>' + proccess +'</td>';
+				html += '</tr>';
+				$('#table_data').prepend(html);
+			}
 		}
 	});
 }
@@ -73,7 +73,7 @@ function getNotifications() {
 function saveProccess(){
 	var info = [];
 	$.each($("input[name='options']:checked"), function(){
-			info.push($(this).val());
+		info.push($(this).val());
 	});
 	$.ajax({
 		url:"http://localhost:8080/api/proccess",
@@ -85,5 +85,5 @@ function saveProccess(){
 		{
 			location.reload();
 		}
-	})
+	});
 }
